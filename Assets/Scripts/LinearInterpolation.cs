@@ -34,9 +34,8 @@ public class LinearInterpolation : MonoBehaviour {
         // newPos = startPos.position + ((endPos.position - startPos.position) * timer);
         newPos = endPos.position * timer + startPos.position * (1.0f - timer);
 
-        //Debug.Log(newPos);
-
         objRef.transform.position = newPos;
+        
 
         //Debug.Log(timer);
 
