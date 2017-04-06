@@ -3,16 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CatmullRomController : MonoBehaviour {
-
-    public Transform p0, p1, p2, p3;
+    
     public GameObject mover;
+    public GameObject point;
+    public int numOfPoints = 20;
 
     private GameObject objRef;
     private float timer = 0.0f;
+    private List<Transform> points;
+
+    private int index0, index1, index2, index3;
 
 	// Use this for initialization
 	void Start () {
-        objRef = Instantiate(mover, p0.transform.position, p0.transform.rotation);
+        points = new List<Transform>();
+
+        for(int i = 0; i < numOfPoints; i++)
+        {
+            points.Add(Instantiate(point, new Vector3(Random.Range(-20.0f, 20.0f), Random.Range(-20.0f, 20.0f), Random.Range(0, 20.0f)), Quaternion.identity).transform);
+        }
+
+        objRef = Instantiate(mover, points[0].transform.position, points[0].transform.rotation);
+
+        index0 = 0;
+        index1 = index0 + 1;
+        index2 = index0 + 2;
+        index3 = index0 + 3;
 	}
 
     // Update is called once per frame
@@ -21,17 +37,40 @@ public class CatmullRomController : MonoBehaviour {
 
         timer += Time.deltaTime;
 
+        
         newPos = 0.5f * (
-            (2 * p1.position) +
-            (-p0.position + p2.position) * timer +
-            (2 * p0.position - 5 * p1.position + 4 * p2.position - p3.position) * timer * timer +
-            (-p0.position + 3 * p1.position - 3 * p2.position + p3.position) * timer * timer * timer);
+            (2 * points[index1].position) +
+            (-points[index0].position + points[index2].position) * timer +
+            (2 * points[index0].position - 5 * points[index1].position + 4 * points[index2].position - points[index3].position) * timer * timer +
+            (-points[index0].position + 3 * points[index1].position - 3 * points[index2].position + points[index3].position) * timer * timer * timer);
 
+        
         objRef.transform.position = newPos;
 
         if (timer > 1.0f)
         {
-            timer = 1.0f;
+            timer = 0.0f;
+            if (index0 + 1 > points.Count - 1)
+                index0 = 0;
+            else 
+                index0++;
+
+            if (index1 + 1 > points.Count - 1)
+                index1 = 0;
+            else
+                index1++;
+
+            if (index2 + 1 > points.Count - 1)
+                index2 = 0;
+            else
+                index2++;
+
+            if (index3 + 1 > points.Count - 1)
+                index3 = 0;
+            else
+                index3++;
+
+            
         }
         
 	}
