@@ -21,11 +21,11 @@ public class LinearInterpolation : MonoBehaviour {
 
         if(moveForward)
         {
-            timer += Time.deltaTime;
+            timer += Time.deltaTime * 0.5f;
         }
         else
         {
-            timer -= Time.deltaTime;
+            timer -= Time.deltaTime * 0.5f;
         }
 
         Vector3 newPos = Vector3.zero;
